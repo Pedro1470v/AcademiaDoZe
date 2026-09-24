@@ -1,22 +1,16 @@
-﻿//Pedro Vinicius
+﻿// Pedro Vinicius
+
 namespace AcademiaDoZe.Domain.Common
 {
-    internal class Notification
+    public class Notification
     {
         public string Property { get; }
-        public string Message { get; }
+        public string Mensagem { get; }
 
-        public Notification(
-            string property,
-            string message)
+        public Notification(string property, string mensagem)
         {
             Property = property;
-            Message = message;
-        }
-
-        public override string ToString()
-        {
-            return $"{Property}: {Message}";
+            Mensagem = mensagem;
         }
     }
 }

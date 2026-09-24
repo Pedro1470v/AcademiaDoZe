@@ -1,10 +1,11 @@
-﻿////Pedro Vinicius
+﻿
+// Pedro Vinicius
+
 namespace AcademiaDoZe.Domain.Enums
 {
-    internal enum EColaboradorVinculo
+    public enum EColaboradorVinculo
     {
         CLT = 0,
-        Estagiario = 1,
-        PrestadorServico = 2
+        Estagio = 1
     }
 }

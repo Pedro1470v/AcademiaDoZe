@@ -1,12 +1,11 @@
-﻿////Pedro Vinicius
-using System.ComponentModel.DataAnnotations;
-
+﻿//Pedro Vinicius
 namespace AcademiaDoZe.Domain.Enums
 {
-    internal enum EColaboradorTipo
+    public enum EColaboradorTipo
     {
         Administrador = 0,
         Atendente = 1,
-        Instrutor = 2
+        Instrutor = 2,
+        Professor = 3
     }
 }

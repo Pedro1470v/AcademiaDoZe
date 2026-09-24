@@ -1,59 +1,63 @@
-﻿//Pedro Vinicius
+﻿// Pedro Vinicius
+
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using AcademiaDoZe.Domain.Common;
 
 namespace AcademiaDoZe.Domain.ValueObjects
 {
-    internal class Email : ValueObject
+    public class Email : ValueObject
     {
-        public string Endereco { get; }
+        public string Valor { get; }
 
-        private Email(string endereco)
+        private Email(string valor)
         {
-            Endereco = endereco;
+            Valor = valor;
         }
 
-        public static Result<Email> Criar(string endereco)
+        public static Result<Email> Criar(string valor)
         {
-            var notifications = new List<Notification>();
+            var notificacoes = new List<Notification>();
 
-            if (string.IsNullOrWhiteSpace(endereco))
+            if (string.IsNullOrWhiteSpace(valor))
             {
-                notifications.Add(
+                notificacoes.Add(
                     new Notification(
-                        "Endereco",
-                        "EMAIL_OBRIGATORIO"));
+                        "Email",
+                        "O e-mail é obrigatório."
+                    )
+                );
             }
             else
             {
-                endereco = endereco.Trim();
+                valor = valor.Trim();
 
-                if (!endereco.Contains("@") || !endereco.Contains("."))
+                if (!Regex.IsMatch(
+                    valor,
+                    @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
                 {
-                    notifications.Add(
+                    notificacoes.Add(
                         new Notification(
-                            "Endereco",
-                            "EMAIL_INVALIDO"));
+                            "Email",
+                            "O e-mail informado é inválido."
+                        )
+                    );
                 }
             }
 
-            if (notifications.Count != 0)
+            if (notificacoes.Count > 0)
             {
-                return Result<Email>.Failure(notifications);
+                return Result<Email>.Failure(notificacoes);
             }
 
             return Result<Email>.Success(
-                new Email(endereco));
+                new Email(valor)
+            );
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Endereco;
-        }
-
-        public override string ToString()
-        {
-            return Endereco;
+            yield return Valor;
         }
     }
 }

@@ -4,7 +4,7 @@ using AcademiaDoZe.Domain.Common;
 
 namespace AcademiaDoZe.Domain.ValueObjects
 {
-    internal class Arquivo
+    public sealed class Arquivo
     {
         public byte[] Conteudo { get; }
         public string Tipo { get; }

@@ -3,7 +3,7 @@ using System;
 
 namespace AcademiaDoZe.Domain.Entities
 {
-    internal abstract class Entidade
+    public abstract class Entidade
     {
         public int ID { get; }
 

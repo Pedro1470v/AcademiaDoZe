@@ -1,11 +1,10 @@
-﻿//Pedro Vinicius
-using System;
+﻿using System;
 using System.Collections.Generic;
 using AcademiaDoZe.Domain.Common;
 
 namespace AcademiaDoZe.Domain.Entities
 {
-    internal sealed class AcessoAluno : Entidade
+    public sealed class AcessoAluno : Entidade, IAggregateRoot
     {
         public Aluno Aluno { get; private set; }
         public DateTime DataHoraEntrada { get; private set; }
@@ -32,21 +31,35 @@ namespace AcademiaDoZe.Domain.Entities
             var notifications = new List<Notification>();
 
             if (aluno == null)
+            {
                 notifications.Add(
-                    new Notification("Aluno", "ALUNO_OBRIGATORIO"));
+                    new Notification(
+                        "Aluno",
+                        "ALUNO_OBRIGATORIO"));
+            }
 
             if (dataHoraEntrada == default)
+            {
                 notifications.Add(
-                    new Notification("DataHoraEntrada", "DATA_HORA_ENTRADA_OBRIGATORIA"));
+                    new Notification(
+                        "DataHoraEntrada",
+                        "DATA_HORA_ENTRADA_OBRIGATORIA"));
+            }
 
-            if (dataHoraSaida.HasValue && dataHoraSaida < dataHoraEntrada)
+            if (dataHoraSaida.HasValue &&
+                dataHoraSaida < dataHoraEntrada)
+            {
                 notifications.Add(
                     new Notification(
                         "DataHoraSaida",
                         "DATA_HORA_SAIDA_INVALIDA"));
+            }
 
             if (notifications.Count != 0)
-                return Result<AcessoAluno>.Failure(notifications);
+            {
+                return Result<AcessoAluno>.Failure(
+                    notifications);
+            }
 
             return Result<AcessoAluno>.Success(
                 new AcessoAluno(
@@ -56,7 +69,8 @@ namespace AcademiaDoZe.Domain.Entities
                     dataHoraSaida));
         }
 
-        public Result<AcessoAluno> RegistrarSaida(DateTime dataHoraSaida)
+        public Result<AcessoAluno> RegistrarSaida(
+            DateTime dataHoraSaida)
         {
             if (dataHoraSaida < DataHoraEntrada)
             {

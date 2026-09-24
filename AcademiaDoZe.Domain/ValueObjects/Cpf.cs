@@ -1,62 +1,63 @@
-﻿//Pedro Vinicius
+﻿// Pedro Vinicius
+
 using System.Collections.Generic;
+using System.Linq;
 using AcademiaDoZe.Domain.Common;
 
 namespace AcademiaDoZe.Domain.ValueObjects
 {
-    internal class Cpf : ValueObject
+    public class Cpf : ValueObject
     {
-        public string Numero { get; }
+        public string Valor { get; }
 
-        private Cpf(string numero)
+        private Cpf(string valor)
         {
-            Numero = numero;
+            Valor = valor;
         }
 
-        public static Result<Cpf> Criar(string numero)
+        public static Result<Cpf> Criar(string valor)
         {
-            var notifications = new List<Notification>();
+            var notificacoes = new List<Notification>();
 
-            if (string.IsNullOrWhiteSpace(numero))
+            if (string.IsNullOrWhiteSpace(valor))
             {
-                notifications.Add(
+                notificacoes.Add(
                     new Notification(
-                        "Numero",
-                        "CPF_OBRIGATORIO"));
+                        "Cpf",
+                        "O CPF é obrigatório."
+                    )
+                );
             }
             else
             {
-                numero = numero
-                    .Replace(".", "")
-                    .Replace("-", "")
-                    .Trim();
+                valor = new string(
+                    valor.Where(char.IsDigit).ToArray()
+                );
 
-                if (numero.Length != 11)
+                if (valor.Length != 11)
                 {
-                    notifications.Add(
+                    notificacoes.Add(
                         new Notification(
-                            "Numero",
-                            "CPF_DEVE_CONTER_11_DIGITOS"));
+                            "Cpf",
+                            "O CPF deve possuir 11 dígitos."
+                        )
+                    );
                 }
             }
 
-            if (notifications.Count != 0)
+            if (notificacoes.Count > 0)
             {
-                return Result<Cpf>.Failure(notifications);
+                return Result<Cpf>.Failure(notificacoes);
             }
 
             return Result<Cpf>.Success(
-                new Cpf(numero));
+                new Cpf(valor)
+            );
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Numero;
-        }
-
-        public override string ToString()
-        {
-            return Numero;
+            yield return Valor;
         }
     }
 }

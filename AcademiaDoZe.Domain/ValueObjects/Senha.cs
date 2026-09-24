@@ -4,7 +4,7 @@ using AcademiaDoZe.Domain.Common;
 
 namespace AcademiaDoZe.Domain.ValueObjects
 {
-    internal class Senha : ValueObject
+    public class Senha : ValueObject
     {
         public string Valor { get; }
 

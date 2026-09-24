@@ -1,4 +1,5 @@
-﻿//Pedro Vinicius
+﻿// Pedro Vinicius
+
 using System;
 using System.Collections.Generic;
 using AcademiaDoZe.Domain.Common;
@@ -6,8 +7,15 @@ using AcademiaDoZe.Domain.ValueObjects;
 
 namespace AcademiaDoZe.Domain.Entities
 {
-    internal class Aluno : Pessoa
+    public class Aluno : Pessoa, IAggregateRoot
     {
+        public DateOnly DataNascimento { get; private set; }
+        public Logradouro Logradouro { get; private set; }
+        public string Numero { get; private set; }
+        public string Complemento { get; private set; }
+        public Senha Senha { get; private set; }
+        public Arquivo Foto { get; private set; }
+
         private Aluno(
             int id,
             string nomeCompleto,
@@ -15,24 +23,26 @@ namespace AcademiaDoZe.Domain.Entities
             DateOnly dataNascimento,
             Telefone telefone,
             Email email,
-            Logradouro endereco,
+            Logradouro logradouro,
             string numero,
             string complemento,
             Senha senha,
-            Arquivo foto)
+            Arquivo foto,
+            Endereco endereco)
             : base(
                 id,
                 nomeCompleto,
                 cpf,
-                dataNascimento,
-                telefone,
                 email,
-                endereco,
-                numero,
-                complemento,
-                senha,
-                foto)
+                telefone,
+                endereco)
         {
+            DataNascimento = dataNascimento;
+            Logradouro = logradouro;
+            Numero = numero;
+            Complemento = complemento;
+            Senha = senha;
+            Foto = foto;
         }
 
         public static Result<Aluno> Criar(
@@ -50,6 +60,7 @@ namespace AcademiaDoZe.Domain.Entities
         {
             var notifications = new List<Notification>();
 
+            // Nome
             if (string.IsNullOrWhiteSpace(nomeCompleto))
             {
                 notifications.Add(
@@ -62,6 +73,7 @@ namespace AcademiaDoZe.Domain.Entities
                 nomeCompleto = nomeCompleto.Trim();
             }
 
+            // Data de nascimento
             if (dataNascimento == default)
             {
                 notifications.Add(
@@ -70,6 +82,7 @@ namespace AcademiaDoZe.Domain.Entities
                         "DATA_NASCIMENTO_OBRIGATORIA"));
             }
 
+            // Endereço
             if (endereco == null)
             {
                 notifications.Add(
@@ -78,6 +91,7 @@ namespace AcademiaDoZe.Domain.Entities
                         "ENDERECO_OBRIGATORIO"));
             }
 
+            // Número
             if (string.IsNullOrWhiteSpace(numero))
             {
                 notifications.Add(
@@ -90,31 +104,62 @@ namespace AcademiaDoZe.Domain.Entities
                 numero = numero.Trim();
             }
 
+            // CPF
             var cpfResult = Cpf.Criar(cpf);
 
             if (cpfResult.IsFailure)
+            {
                 notifications.AddRange(cpfResult.Notifications);
+            }
 
+            // Telefone
             var telefoneResult = Telefone.Criar(telefone);
 
             if (telefoneResult.IsFailure)
+            {
                 notifications.AddRange(telefoneResult.Notifications);
+            }
 
+            // E-mail
             var emailResult = Email.Criar(email);
 
             if (emailResult.IsFailure)
+            {
                 notifications.AddRange(emailResult.Notifications);
+            }
 
+            // Senha
             var senhaResult = Senha.Criar(senha);
 
             if (senhaResult.IsFailure)
+            {
                 notifications.AddRange(senhaResult.Notifications);
+            }
 
+            // Se houver erros
             if (notifications.Count > 0)
             {
                 return Result<Aluno>.Failure(notifications);
             }
 
+            // Cria o Endereco a partir do Logradouro
+            var enderecoResult = Endereco.Criar(
+                endereco.Cep,
+                endereco.Nome,
+                numero,
+                complemento?.Trim() ?? string.Empty,
+                endereco.Bairro,
+                endereco.Cidade,
+                endereco.Estado);
+
+            if (enderecoResult.IsFailure)
+            {
+                notifications.AddRange(enderecoResult.Notifications);
+
+                return Result<Aluno>.Failure(notifications);
+            }
+
+            // Cria o Aluno
             return Result<Aluno>.Success(
                 new Aluno(
                     id,
@@ -125,9 +170,10 @@ namespace AcademiaDoZe.Domain.Entities
                     emailResult.Value,
                     endereco,
                     numero,
-                    complemento?.Trim(),
+                    complemento?.Trim() ?? string.Empty,
                     senhaResult.Value,
-                    foto));
+                    foto,
+                    enderecoResult.Value));
         }
     }
 }
