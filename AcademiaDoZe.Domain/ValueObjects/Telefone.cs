@@ -1,64 +1,60 @@
-﻿//Pedro Vinicius
+﻿// Pedro Vinicius
+
 using System.Collections.Generic;
+using System.Linq;
 using AcademiaDoZe.Domain.Common;
 
 namespace AcademiaDoZe.Domain.ValueObjects
 {
-    internal class Telefone : ValueObject
+    public class Telefone : ValueObject
     {
-        public string Numero { get; }
+        public string Valor { get; }
 
-        private Telefone(string numero)
+        private Telefone(string valor)
         {
-            Numero = numero;
+            Valor = valor;
         }
 
-        public static Result<Telefone> Criar(string numero)
+        public static Result<Telefone> Criar(string valor)
         {
-            var notifications = new List<Notification>();
+            var notificacoes = new List<Notification>();
 
-            if (string.IsNullOrWhiteSpace(numero))
+            if (string.IsNullOrWhiteSpace(valor))
             {
-                notifications.Add(
+                notificacoes.Add(
                     new Notification(
-                        "Numero",
-                        "TELEFONE_OBRIGATORIO"));
-            }
-            else
-            {
-                numero = numero
-                    .Replace("(", "")
-                    .Replace(")", "")
-                    .Replace("-", "")
-                    .Replace(" ", "")
-                    .Trim();
+                        "Telefone",
+                        "O telefone é obrigatório."
+                    )
+                );
 
-                if (numero.Length < 10 || numero.Length > 11)
-                {
-                    notifications.Add(
-                        new Notification(
-                            "Numero",
-                            "TELEFONE_INVALIDO"));
-                }
+                return Result<Telefone>.Failure(notificacoes);
             }
 
-            if (notifications.Count != 0)
+            valor = new string(
+                valor.Where(char.IsDigit).ToArray()
+            );
+
+            if (valor.Length != 10 && valor.Length != 11)
             {
-                return Result<Telefone>.Failure(notifications);
+                notificacoes.Add(
+                    new Notification(
+                        "Telefone",
+                        "O telefone deve possuir 10 ou 11 dígitos."
+                    )
+                );
+
+                return Result<Telefone>.Failure(notificacoes);
             }
 
             return Result<Telefone>.Success(
-                new Telefone(numero));
+                new Telefone(valor)
+            );
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Numero;
-        }
-
-        public override string ToString()
-        {
-            return Numero;
+            yield return Valor;
         }
     }
 }

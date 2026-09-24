@@ -1,10 +1,12 @@
-﻿//Pedro Vinicius
+﻿// Pedro Vinicius
+
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace AcademiaDoZe.Domain.Enums
 {
-    [System.Flags]
-    internal enum MatriculaRestricoes
+    [Flags]
+    public enum MatriculaRestricoes
     {
         [Display(Name = "Diabetes")]
         Diabetes = 1,

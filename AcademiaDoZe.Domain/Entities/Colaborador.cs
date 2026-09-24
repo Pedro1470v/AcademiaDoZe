@@ -1,5 +1,6 @@
-﻿//Pedro Vinicius
-using System;
+﻿
+// Pedro Vinicius
+
 using System.Collections.Generic;
 using AcademiaDoZe.Domain.Common;
 using AcademiaDoZe.Domain.Enums;
@@ -7,195 +8,100 @@ using AcademiaDoZe.Domain.ValueObjects;
 
 namespace AcademiaDoZe.Domain.Entities
 {
-    internal class Colaborador : Pessoa
+    public class Colaborador : Pessoa, IAggregateRoot
     {
-        public DateOnly DataAdmissao { get; }
-        public EColaboradorTipo Tipo { get; }
-        public EColaboradorVinculo Vinculo { get; }
+        public EColaboradorTipo Tipo { get; protected set; }
+
+        public EColaboradorVinculo Vinculo { get; protected set; }
 
         private Colaborador(
             int id,
-            string nomeCompleto,
+            string nome,
             Cpf cpf,
-            DateOnly dataNascimento,
-            Telefone telefone,
             Email email,
-            Logradouro endereco,
-            string numero,
-            string complemento,
-            Senha senha,
-            Arquivo foto,
-            DateOnly dataAdmissao,
+            Telefone telefone,
+            Endereco endereco,
             EColaboradorTipo tipo,
             EColaboradorVinculo vinculo)
             : base(
                 id,
-                nomeCompleto,
+                nome,
                 cpf,
-                dataNascimento,
-                telefone,
                 email,
-                endereco,
-                numero,
-                complemento,
-                senha,
-                foto)
+                telefone,
+                endereco)
         {
-            DataAdmissao = dataAdmissao;
             Tipo = tipo;
             Vinculo = vinculo;
         }
 
         public static Result<Colaborador> Criar(
-            int id,
-            string nomeCompleto,
-            string cpf,
-            DateOnly dataNascimento,
-            string telefone,
-            string email,
-            Logradouro endereco,
-            string numero,
-            string complemento,
-            string senha,
-            Arquivo foto,
-            DateOnly dataAdmissao,
+            string nome,
+            Cpf cpf,
+            Email email,
+            Telefone telefone,
+            Endereco endereco,
             EColaboradorTipo tipo,
             EColaboradorVinculo vinculo)
         {
-            var notifications = new List<Notification>();
+            var notificacoes = new List<Notification>();
 
-            if (string.IsNullOrWhiteSpace(nomeCompleto))
+            if (string.IsNullOrWhiteSpace(nome))
             {
-                notifications.Add(
+                notificacoes.Add(
                     new Notification(
                         "Nome",
-                        "NOME_OBRIGATORIO"));
-            }
-            else
-            {
-                nomeCompleto = nomeCompleto.Trim();
+                        "O nome é obrigatório."));
             }
 
-            if (dataNascimento == default)
+            if (cpf == null)
             {
-                notifications.Add(
+                notificacoes.Add(
                     new Notification(
-                        "DataNascimento",
-                        "DATA_NASCIMENTO_OBRIGATORIA"));
+                        "Cpf",
+                        "O CPF é obrigatório."));
             }
-            else if (
-                dataNascimento >
-                DateOnly.FromDateTime(DateTime.Today.AddYears(-12)))
+
+            if (email == null)
             {
-                notifications.Add(
+                notificacoes.Add(
                     new Notification(
-                        "DataNascimento",
-                        "IDADE_MINIMA_12_ANOS"));
+                        "Email",
+                        "O e-mail é obrigatório."));
+            }
+
+            if (telefone == null)
+            {
+                notificacoes.Add(
+                    new Notification(
+                        "Telefone",
+                        "O telefone é obrigatório."));
             }
 
             if (endereco == null)
             {
-                notifications.Add(
+                notificacoes.Add(
                     new Notification(
                         "Endereco",
-                        "ENDERECO_OBRIGATORIO"));
+                        "O endereço é obrigatório."));
             }
 
-            if (string.IsNullOrWhiteSpace(numero))
+            if (notificacoes.Count > 0)
             {
-                notifications.Add(
-                    new Notification(
-                        "Numero",
-                        "NUMERO_OBRIGATORIO"));
-            }
-            else
-            {
-                numero = numero.Trim();
+                return Result<Colaborador>.Failure(notificacoes);
             }
 
-            if (dataAdmissao == default)
-            {
-                notifications.Add(
-                    new Notification(
-                        "DataAdmissao",
-                        "DATA_ADMISSAO_OBRIGATORIA"));
-            }
-            else if (
-                dataAdmissao >
-                DateOnly.FromDateTime(DateTime.Today))
-            {
-                notifications.Add(
-                    new Notification(
-                        "DataAdmissao",
-                        "DATA_ADMISSAO_NAO_PODE_SER_FUTURA"));
-            }
+            var colaborador = new Colaborador(
+                0,
+                nome.Trim(),
+                cpf,
+                email,
+                telefone,
+                endereco,
+                tipo,
+                vinculo);
 
-            if (!Enum.IsDefined(typeof(EColaboradorTipo), tipo))
-            {
-                notifications.Add(
-                    new Notification(
-                        "Tipo",
-                        "TIPO_COLABORADOR_INVALIDO"));
-            }
-
-            if (!Enum.IsDefined(typeof(EColaboradorVinculo), vinculo))
-            {
-                notifications.Add(
-                    new Notification(
-                        "Vinculo",
-                        "VINCULO_INVALIDO"));
-            }
-
-            if (tipo == EColaboradorTipo.Administrador &&
-                vinculo != EColaboradorVinculo.CLT)
-            {
-                notifications.Add(
-                    new Notification(
-                        "Vinculo",
-                        "ADMINISTRADOR_DEVE_SER_CLT"));
-            }
-
-            var cpfResult = Cpf.Criar(cpf);
-
-            if (cpfResult.IsFailure)
-                notifications.AddRange(cpfResult.Notifications);
-
-            var telefoneResult = Telefone.Criar(telefone);
-
-            if (telefoneResult.IsFailure)
-                notifications.AddRange(telefoneResult.Notifications);
-
-            var emailResult = Email.Criar(email);
-
-            if (emailResult.IsFailure)
-                notifications.AddRange(emailResult.Notifications);
-
-            var senhaResult = Senha.Criar(senha);
-
-            if (senhaResult.IsFailure)
-                notifications.AddRange(senhaResult.Notifications);
-
-            if (notifications.Count > 0)
-            {
-                return Result<Colaborador>.Failure(notifications);
-            }
-
-            return Result<Colaborador>.Success(
-                new Colaborador(
-                    id,
-                    nomeCompleto,
-                    cpfResult.Value,
-                    dataNascimento,
-                    telefoneResult.Value,
-                    emailResult.Value,
-                    endereco,
-                    numero,
-                    complemento?.Trim(),
-                    senhaResult.Value,
-                    foto,
-                    dataAdmissao,
-                    tipo,
-                    vinculo));
+            return Result<Colaborador>.Success(colaborador);
         }
     }
 }

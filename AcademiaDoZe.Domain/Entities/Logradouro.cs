@@ -1,144 +1,193 @@
-﻿//Pedro Vinicius
+﻿// Pedro Vinicius
+
 using System;
 using System.Collections.Generic;
 using AcademiaDoZe.Domain.Common;
 
 namespace AcademiaDoZe.Domain.Entities
 {
-    internal class Logradouro : Entidade
+    public class Logradouro : Entidade, IAggregateRoot
     {
         public string Cep { get; }
         public string Nome { get; }
+        public string Numero { get; }
         public string Bairro { get; }
         public string Cidade { get; }
         public string Estado { get; }
-        public string Pais { get; }
 
         private Logradouro(
             int id,
             string cep,
             string nome,
+            string numero,
             string bairro,
             string cidade,
-            string estado,
-            string pais)
+            string estado)
             : base(id)
         {
             Cep = cep;
             Nome = nome;
+            Numero = numero;
             Bairro = bairro;
             Cidade = cidade;
             Estado = estado;
-            Pais = pais;
         }
 
+        public static Result<Logradouro> Criar(
+            string cep,
+            string nome,
+            string bairro,
+            string cidade,
+            string estado)
+        {
+            return CriarInterno(
+                0,
+                cep,
+                nome,
+                string.Empty,
+                bairro,
+                cidade,
+                estado);
+        }
+
+        public static Result<Logradouro> Criar(
+            string cep,
+            string nome,
+            string numero,
+            string bairro,
+            string cidade,
+            string estado)
+        {
+            return CriarInterno(
+                0,
+                cep,
+                nome,
+                numero,
+                bairro,
+                cidade,
+                estado);
+        }
+
+        // Usado pelo Repository quando o ID já existe no banco.
         public static Result<Logradouro> Criar(
             int id,
             string cep,
             string nome,
             string bairro,
             string cidade,
-            string estado,
-            string pais)
+            string estado)
         {
-            var notifications = new List<Notification>();
+            return CriarInterno(
+                id,
+                cep,
+                nome,
+                string.Empty,
+                bairro,
+                cidade,
+                estado);
+        }
+
+        // Usado pelo Repository quando o ID e o número já existem no banco.
+        public static Result<Logradouro> Criar(
+            int id,
+            string cep,
+            string nome,
+            string numero,
+            string bairro,
+            string cidade,
+            string estado)
+        {
+            return CriarInterno(
+                id,
+                cep,
+                nome,
+                numero,
+                bairro,
+                cidade,
+                estado);
+        }
+
+        private static Result<Logradouro> CriarInterno(
+            int id,
+            string cep,
+            string nome,
+            string numero,
+            string bairro,
+            string cidade,
+            string estado)
+        {
+            var notificacoes = new List<Notification>();
+
+            if (id < 0)
+            {
+                notificacoes.Add(
+                    new Notification(
+                        "Id",
+                        "O ID não pode ser negativo."));
+            }
 
             if (string.IsNullOrWhiteSpace(cep))
             {
-                notifications.Add(
+                notificacoes.Add(
                     new Notification(
                         "Cep",
-                        "CEP_OBRIGATORIO"));
+                        "O CEP é obrigatório."));
             }
-            else
+            else if (cep.Trim().Length != 8)
             {
-                cep = cep
-                    .Replace("-", "")
-                    .Trim();
-
-                if (cep.Length != 8)
-                {
-                    notifications.Add(
-                        new Notification(
-                            "Cep",
-                            "CEP_INVALIDO"));
-                }
+                notificacoes.Add(
+                    new Notification(
+                        "Cep",
+                        "O CEP deve possuir 8 caracteres."));
             }
 
             if (string.IsNullOrWhiteSpace(nome))
             {
-                notifications.Add(
+                notificacoes.Add(
                     new Notification(
                         "Nome",
-                        "NOME_OBRIGATORIO"));
-            }
-            else
-            {
-                nome = nome.Trim();
+                        "O nome do logradouro é obrigatório."));
             }
 
             if (string.IsNullOrWhiteSpace(bairro))
             {
-                notifications.Add(
+                notificacoes.Add(
                     new Notification(
                         "Bairro",
-                        "BAIRRO_OBRIGATORIO"));
-            }
-            else
-            {
-                bairro = bairro.Trim();
+                        "O bairro é obrigatório."));
             }
 
             if (string.IsNullOrWhiteSpace(cidade))
             {
-                notifications.Add(
+                notificacoes.Add(
                     new Notification(
                         "Cidade",
-                        "CIDADE_OBRIGATORIA"));
-            }
-            else
-            {
-                cidade = cidade.Trim();
+                        "A cidade é obrigatória."));
             }
 
             if (string.IsNullOrWhiteSpace(estado))
             {
-                notifications.Add(
+                notificacoes.Add(
                     new Notification(
                         "Estado",
-                        "ESTADO_OBRIGATORIO"));
-            }
-            else
-            {
-                estado = estado.Trim().ToUpper();
+                        "O estado é obrigatório."));
             }
 
-            if (string.IsNullOrWhiteSpace(pais))
+            if (notificacoes.Count > 0)
             {
-                notifications.Add(
-                    new Notification(
-                        "Pais",
-                        "PAIS_OBRIGATORIO"));
-            }
-            else
-            {
-                pais = pais.Trim();
-            }
-
-            if (notifications.Count > 0)
-            {
-                return Result<Logradouro>.Failure(notifications);
+                return Result<Logradouro>.Failure(
+                    notificacoes);
             }
 
             return Result<Logradouro>.Success(
                 new Logradouro(
                     id,
-                    cep,
-                    nome,
-                    bairro,
-                    cidade,
-                    estado,
-                    pais));
+                    cep.Trim(),
+                    nome.Trim(),
+                    numero?.Trim() ?? string.Empty,
+                    bairro.Trim(),
+                    cidade.Trim(),
+                    estado.Trim()));
         }
     }
 }

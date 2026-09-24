@@ -1,63 +1,27 @@
-﻿//Pedro Vinicius
+﻿// Pedro Vinicius
+
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AcademiaDoZe.Domain.Common
 {
-    internal class Result
+    public class Result<T>
     {
         public bool IsSuccess { get; }
+
         public bool IsFailure => !IsSuccess;
 
-        public IReadOnlyCollection<Notification> Notifications { get; }
+        public T? Value { get; }
 
-        protected Result(
-            bool isSuccess,
-            IReadOnlyCollection<Notification> notifications)
-        {
-            IsSuccess = isSuccess;
-            Notifications = notifications;
-        }
-
-        public static Result Success()
-        {
-            return new Result(
-                true,
-                new List<Notification>());
-        }
-
-        public static Result Failure(
-            IEnumerable<Notification> notifications)
-        {
-            return new Result(
-                false,
-                notifications.ToList());
-        }
-
-        public static Result Failure(
-            string property,
-            string message)
-        {
-            return new Result(
-                false,
-                new List<Notification>
-                {
-                    new Notification(property, message)
-                });
-        }
-    }
-
-    internal class Result<T> : Result
-    {
-        public T Value { get; }
+        public List<Notification> Notifications { get; }
 
         private Result(
             bool isSuccess,
-            T value,
-            IReadOnlyCollection<Notification> notifications)
-            : base(isSuccess, notifications)
+            T? value,
+            List<Notification> notifications)
         {
+            IsSuccess = isSuccess;
             Value = value;
+            Notifications = notifications;
         }
 
         public static Result<T> Success(T value)
@@ -69,25 +33,27 @@ namespace AcademiaDoZe.Domain.Common
         }
 
         public static Result<T> Failure(
-            IEnumerable<Notification> notifications)
+            List<Notification> notifications)
         {
             return new Result<T>(
                 false,
-                default!,
-                notifications.ToList());
+                default,
+                notifications);
         }
 
         public static Result<T> Failure(
             string property,
-            string message)
+            string mensagem)
         {
+            var notifications = new List<Notification>
+            {
+                new Notification(property, mensagem)
+            };
+
             return new Result<T>(
                 false,
-                default!,
-                new List<Notification>
-                {
-                    new Notification(property, message)
-                });
+                default,
+                notifications);
         }
     }
 }

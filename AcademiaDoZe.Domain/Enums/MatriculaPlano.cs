@@ -1,20 +1,12 @@
-﻿//Pedro Vinicius
-using System.ComponentModel.DataAnnotations;
+﻿// Pedro Vinicius
 
 namespace AcademiaDoZe.Domain.Enums
 {
-    internal enum MatriculaPlano
+    public enum MatriculaPlano
     {
-        [Display(Name = "Mensal")]
-        Mensal = 0,
-
-        [Display(Name = "Trimestral")]
-        Trimestral = 1,
-
-        [Display(Name = "Semestral")]
-        Semestral = 2,
-
-        [Display(Name = "Anual")]
-        Anual = 3
+        Mensal = 1,
+        Trimestral = 2,
+        Semestral = 3,
+        Anual = 4
     }
 }

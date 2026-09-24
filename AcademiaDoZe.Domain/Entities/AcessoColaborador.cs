@@ -1,15 +1,30 @@
-﻿//Pedro Vinicius
+﻿// Pedro Vinicius
+
 using System;
 using System.Collections.Generic;
 using AcademiaDoZe.Domain.Common;
+using AcademiaDoZe.Domain.Enums;
 
 namespace AcademiaDoZe.Domain.Entities
 {
-    internal sealed class AcessoColaborador : Entidade
+    public sealed class AcessoColaborador : Entidade, IAggregateRoot
     {
         public Colaborador Colaborador { get; private set; }
+
         public DateTime DataHoraEntrada { get; private set; }
+
         public DateTime? DataHoraSaida { get; private set; }
+
+        public TimeSpan TempoPermanencia
+        {
+            get
+            {
+                if (!DataHoraSaida.HasValue)
+                    return TimeSpan.Zero;
+
+                return DataHoraSaida.Value - DataHoraEntrada;
+            }
+        }
 
         private AcessoColaborador(
             int id,
@@ -29,7 +44,8 @@ namespace AcademiaDoZe.Domain.Entities
             DateTime dataHoraEntrada,
             DateTime? dataHoraSaida = null)
         {
-            var notifications = new List<Notification>();
+            var notifications =
+                new List<Notification>();
 
             if (colaborador == null)
             {
@@ -58,7 +74,8 @@ namespace AcademiaDoZe.Domain.Entities
 
             if (notifications.Count != 0)
             {
-                return Result<AcessoColaborador>.Failure(notifications);
+                return Result<AcessoColaborador>.Failure(
+                    notifications);
             }
 
             return Result<AcessoColaborador>.Success(
@@ -79,9 +96,51 @@ namespace AcademiaDoZe.Domain.Entities
                     "DATA_HORA_SAIDA_INVALIDA");
             }
 
-            DataHoraSaida = dataHoraSaida;
+            DataHoraSaida =
+                dataHoraSaida;
 
-            return Result<AcessoColaborador>.Success(this);
+            return Result<AcessoColaborador>.Success(
+                this);
+        }
+
+        public TimeSpan CalcularTempoPermanencia()
+        {
+            if (!DataHoraSaida.HasValue)
+                return TimeSpan.Zero;
+
+            return DataHoraSaida.Value -
+                   DataHoraEntrada;
+        }
+
+        public TimeSpan ObterLimiteDiario()
+        {
+            if (Colaborador.Vinculo ==
+                EColaboradorVinculo.Estagio)
+            {
+                return TimeSpan.FromHours(6);
+            }
+
+            return TimeSpan.FromHours(8);
+        }
+
+        public Result<AcessoColaborador> ValidarLimiteDiario(
+            TimeSpan tempoTotalDoDia)
+        {
+            var limite =
+                ObterLimiteDiario();
+
+            if (tempoTotalDoDia > limite)
+            {
+                return Result<AcessoColaborador>.Failure(
+                    "DataHoraEntrada",
+                    Colaborador.Vinculo ==
+                        EColaboradorVinculo.Estagio
+                        ? "LIMITE_DIARIO_ESTAGIO_EXCEDIDO"
+                        : "LIMITE_DIARIO_CLT_EXCEDIDO");
+            }
+
+            return Result<AcessoColaborador>.Success(
+                this);
         }
     }
 }
