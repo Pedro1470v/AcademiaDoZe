@@ -25,7 +25,7 @@ public interface ILogradouroService
         int id,
         CancellationToken cancellationToken = default);
 
-    Task<LogradouroDto?> ObterPorCepAsync(
+    Task<IEnumerable<LogradouroDto>> ObterPorCepAsync(
         string cep,
         CancellationToken cancellationToken = default);
 

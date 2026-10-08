@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.DashboardListPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Dashboard"
+    BackgroundColor="#1E1E1E">
+
+    <ScrollView>
+
+        <VerticalStackLayout
+            Padding="12"
+            Spacing="18">
+
+            <!-- LOGO -->
+            <Image
+                Source="academiadoze.jpg"
+                HeightRequest="150"
+                Aspect="AspectFit"
+                HorizontalOptions="Center" />
+
+            <!-- TÍTULO -->
+            <VerticalStackLayout
+                Spacing="4"
+                HorizontalOptions="Center">
+
+                <Label
+                    Text="Academia do Zé"
+                    FontSize="28"
+                    TextColor="White"
+                    HorizontalTextAlignment="Center" />
+
+                <Label
+                    Text="Sistema de Gerenciamento"
+                    FontSize="20"
+                    TextColor="#DDDDDD"
+                    HorizontalTextAlignment="Center" />
+
+            </VerticalStackLayout>
+
+            <!-- CARTÕES -->
+            <Grid
+                RowDefinitions="Auto,Auto"
+                ColumnDefinitions="*,*"
+                RowSpacing="18"
+                ColumnSpacing="28"
+                Margin="0,5,0,0">
+
+                <!-- LOGRADOUROS -->
+                <Border
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    HeightRequest="100"
+                    Padding="10"
+                    BackgroundColor="#1E1E1E"
+                    Stroke="#333333"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12">
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToLogradourosCommand}" />
+                    </Border.GestureRecognizers>
+
+                    <VerticalStackLayout
+                        Spacing="3"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+
+                        <Label
+                            Text="{Binding TotalLogradouros}"
+                            FontSize="28"
+                            TextColor="White"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center" />
+
+                        <Label
+                            Text="Logradouros"
+                            FontSize="14"
+                            TextColor="White"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center" />
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+                <!-- ALUNOS -->
+                <Border
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HeightRequest="100"
+                    Padding="10"
+                    BackgroundColor="#1E1E1E"
+                    Stroke="#333333"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12">
+
+                    <VerticalStackLayout
+                        Spacing="3"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+
+                        <Label
+                            Text="3"
+                            FontSize="28"
+                            TextColor="White"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center" />
+
+                        <Label
+                            Text="Alunos"
+                            FontSize="14"
+                            TextColor="White"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center" />
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+                <!-- COLABORADORES -->
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    HeightRequest="100"
+                    Padding="10"
+                    BackgroundColor="#1E1E1E"
+                    Stroke="#333333"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12">
+
+                    <VerticalStackLayout
+                        Spacing="3"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+
+                        <Label
+                            Text="2"
+                            FontSize="28"
+                            TextColor="White"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center" />
+
+                        <Label
+                            Text="Colaboradores"
+                            FontSize="14"
+                            TextColor="White"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center" />
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+                <!-- MATRÍCULAS -->
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    HeightRequest="100"
+                    Padding="10"
+                    BackgroundColor="#1E1E1E"
+                    Stroke="#333333"
+                    StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12">
+
+                    <VerticalStackLayout
+                        Spacing="3"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+
+                        <Label
+                            Text="1"
+                            FontSize="28"
+                            TextColor="White"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center" />
+
+                        <Label
+                            Text="Matrículas"
+                            FontSize="14"
+                            TextColor="White"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center" />
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+            </Grid>
+
+            <!-- CARREGAMENTO -->
+            <ActivityIndicator
+                IsVisible="{Binding IsBusy}"
+                IsRunning="{Binding IsBusy}"
+                Color="#A98BFF"
+                WidthRequest="35"
+                HeightRequest="35"
+                HorizontalOptions="Center"
+                Margin="0,5,0,10" />
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>

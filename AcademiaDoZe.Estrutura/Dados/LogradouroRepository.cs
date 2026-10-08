@@ -277,6 +277,65 @@ public class LogradouroRepository : BaseRepository, ILogradouroRepository
 
         await AbrirConexaoAsync(connection);
 
+        // Verifica se o logradouro está sendo utilizado por algum aluno.
+        using var alunoCommand = connection.CreateCommand();
+
+        alunoCommand.CommandText = @"
+            SELECT EXISTS
+            (
+                SELECT 1
+                FROM tb_aluno
+                WHERE logradouro_id = @id
+            );
+        ";
+
+        var alunoParametro = alunoCommand.CreateParameter();
+        alunoParametro.ParameterName = "@id";
+        alunoParametro.Value = id;
+
+        alunoCommand.Parameters.Add(alunoParametro);
+
+        var alunoUtiliza =
+            Convert.ToInt32(
+                await alunoCommand.ExecuteScalarAsync(
+                    cancellationToken)) == 1;
+
+        if (alunoUtiliza)
+        {
+            throw new InvalidOperationException(
+                "Não é possível excluir este logradouro porque ele está vinculado a um aluno.");
+        }
+
+        // Verifica se o logradouro está sendo utilizado por algum colaborador.
+        using var colaboradorCommand = connection.CreateCommand();
+
+        colaboradorCommand.CommandText = @"
+            SELECT EXISTS
+            (
+                SELECT 1
+                FROM tb_colaborador
+                WHERE logradouro_id = @id
+            );
+        ";
+
+        var colaboradorParametro = colaboradorCommand.CreateParameter();
+        colaboradorParametro.ParameterName = "@id";
+        colaboradorParametro.Value = id;
+
+        colaboradorCommand.Parameters.Add(colaboradorParametro);
+
+        var colaboradorUtiliza =
+            Convert.ToInt32(
+                await colaboradorCommand.ExecuteScalarAsync(
+                    cancellationToken)) == 1;
+
+        if (colaboradorUtiliza)
+        {
+            throw new InvalidOperationException(
+                "Não é possível excluir este logradouro porque ele está vinculado a um colaborador.");
+        }
+
+        // Se não houver nenhum vínculo, realiza a exclusão.
         using var command = connection.CreateCommand();
 
         command.CommandText = @"

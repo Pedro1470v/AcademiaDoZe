@@ -43,7 +43,7 @@ public class LogradouroService : ILogradouroService
         return logradouros.Select(ToDto);
     }
 
-    public async Task<LogradouroDto?> ObterPorCepAsync(
+    public async Task<IEnumerable<LogradouroDto>> ObterPorCepAsync(
         string cep,
         CancellationToken cancellationToken = default)
     {
@@ -58,16 +58,13 @@ public class LogradouroService : ILogradouroService
             await _repoFactory().ObterTodos(
                 cancellationToken);
 
-        var logradouro =
-            logradouros.FirstOrDefault(x =>
+        return logradouros
+            .Where(x =>
                 string.Equals(
                     x.Cep,
                     cep.Trim(),
-                    StringComparison.OrdinalIgnoreCase));
-
-        return logradouro == null
-            ? null
-            : ToDto(logradouro);
+                    StringComparison.OrdinalIgnoreCase))
+            .Select(ToDto);
     }
 
     public async Task<bool> CepJaExisteAsync(
@@ -155,15 +152,6 @@ public class LogradouroService : ILogradouroService
     {
         ArgumentNullException.ThrowIfNull(logradouroDto);
 
-        if (await CepJaExisteAsync(
-                logradouroDto.Cep,
-                null,
-                cancellationToken))
-        {
-            throw new InvalidOperationException(
-                $"Já existe um logradouro cadastrado com o CEP {logradouroDto.Cep}.");
-        }
-
         var resultado =
             Logradouro.Criar(
                 logradouroDto.Cep,
@@ -205,15 +193,6 @@ public class LogradouroService : ILogradouroService
         {
             throw new KeyNotFoundException(
                 $"Logradouro com ID {logradouroDto.Id} não encontrado.");
-        }
-
-        if (await CepJaExisteAsync(
-                logradouroDto.Cep,
-                logradouroDto.Id,
-                cancellationToken))
-        {
-            throw new InvalidOperationException(
-                $"Já existe outro logradouro cadastrado com o CEP {logradouroDto.Cep}.");
         }
 
         var resultado =
