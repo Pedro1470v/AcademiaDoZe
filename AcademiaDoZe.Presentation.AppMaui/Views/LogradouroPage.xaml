@@ -3,23 +3,20 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.LogradouroPage"
     xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.LogradouroPage"
     x:DataType="vm:LogradouroViewModel"
     Title="{Binding Title}">
 
     <ScrollView>
-
-        <StackLayout Spacing="20">
+        <VerticalStackLayout Spacing="20">
 
             <!-- CEP -->
-
             <Border
                 Style="{StaticResource CardBorder}"
                 Margin="15,10">
 
-                <StackLayout Spacing="5">
-
+                <VerticalStackLayout Spacing="5">
                     <Label Text="CEP" />
 
                     <Grid ColumnDefinitions="*,Auto">
@@ -34,86 +31,68 @@
                         <Button
                             Grid.Column="1"
                             Text="Buscar CEP"
+                            ImageSource="buscar.png"
+                            ContentLayout="Left,8"
                             Command="{Binding SearchByCepCommand}"
                             Style="{StaticResource ButtonPrimary}"
                             HeightRequest="40"
                             Padding="15,0" />
 
                     </Grid>
-
-                </StackLayout>
-
+                </VerticalStackLayout>
             </Border>
 
             <!-- Dados do Logradouro -->
-
             <Border
                 Style="{StaticResource CardBorder}"
                 Margin="15,10">
 
-                <StackLayout Spacing="15">
+                <VerticalStackLayout Spacing="15">
 
                     <Label
                         Text="{Binding Logradouro.Id, StringFormat='Logradouro ID: {0}'}"
                         Style="{StaticResource SubHeadline}" />
 
-                    <StackLayout Spacing="5">
-
+                    <VerticalStackLayout Spacing="5">
                         <Label Text="Nome/Rua" />
-
                         <Entry
                             Text="{Binding Logradouro.Nome}"
                             Placeholder="Digite o nome da rua..." />
+                    </VerticalStackLayout>
 
-                    </StackLayout>
-
-                    <StackLayout Spacing="5">
-
+                    <VerticalStackLayout Spacing="5">
                         <Label Text="Número" />
-
                         <Entry
                             Text="{Binding Logradouro.Numero}"
                             Placeholder="Digite o número..."
                             Keyboard="Numeric" />
+                    </VerticalStackLayout>
 
-                    </StackLayout>
-
-                    <StackLayout Spacing="5">
-
+                    <VerticalStackLayout Spacing="5">
                         <Label Text="Bairro" />
-
                         <Entry
                             Text="{Binding Logradouro.Bairro}"
                             Placeholder="Digite o bairro..." />
+                    </VerticalStackLayout>
 
-                    </StackLayout>
-
-                    <StackLayout Spacing="5">
-
+                    <VerticalStackLayout Spacing="5">
                         <Label Text="Cidade" />
-
                         <Entry
                             Text="{Binding Logradouro.Cidade}"
                             Placeholder="Digite a cidade..." />
+                    </VerticalStackLayout>
 
-                    </StackLayout>
-
-                    <StackLayout Spacing="5">
-
+                    <VerticalStackLayout Spacing="5">
                         <Label Text="Estado" />
-
                         <Entry
                             Text="{Binding Logradouro.Estado}"
                             Placeholder="Digite o estado..." />
+                    </VerticalStackLayout>
 
-                    </StackLayout>
-
-                </StackLayout>
-
+                </VerticalStackLayout>
             </Border>
 
             <!-- Botões -->
-
             <Grid
                 ColumnDefinitions="*,*"
                 ColumnSpacing="10"
@@ -122,6 +101,8 @@
                 <Button
                     Grid.Column="0"
                     Text="Cancelar"
+                    ImageSource="cancelar.png"
+                    ContentLayout="Left,8"
                     Command="{Binding CancelCommand}"
                     Style="{StaticResource ButtonSecondary}"
                     HeightRequest="50" />
@@ -129,22 +110,21 @@
                 <Button
                     Grid.Column="1"
                     Text="Salvar"
+                    ImageSource="salvar.png"
+                    ContentLayout="Left,8"
                     Command="{Binding SaveLogradouroCommand}"
                     Style="{StaticResource ButtonPrimary}"
                     HeightRequest="50" />
 
             </Grid>
 
-            <!-- Loading -->
-
+            <!-- Carregamento -->
             <ActivityIndicator
                 IsVisible="{Binding IsBusy}"
                 IsRunning="{Binding IsBusy}"
                 VerticalOptions="Center"
                 HorizontalOptions="Center" />
 
-        </StackLayout>
-
+        </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>

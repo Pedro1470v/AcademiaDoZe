@@ -3,20 +3,37 @@
     x:Class="AcademiaDoZe.Presentation.AppMaui.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:AcademiaDoZe.Presentation.AppMaui"
     xmlns:views="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Views"
-    Title="Academia do Zé">
+    FlyoutBehavior="Flyout">
 
-    <FlyoutItem Title="Dashboard">
+    <FlyoutItem Title="Dashboard" Route="dashboard">
         <ShellContent
             ContentTemplate="{DataTemplate views:DashboardListPage}"
             Route="dashboard" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Logradouros">
+    <FlyoutItem Title="Logradouros" Route="logradouros">
         <ShellContent
             ContentTemplate="{DataTemplate views:LogradouroListPage}"
             Route="logradouros" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Colaboradores" Route="colaboradores">
+        <FlyoutItem.Icon>
+            <FontImageSource
+                FontFamily="MaterialIcons"
+                Glyph="&#xea67;" />
+        </FlyoutItem.Icon>
+
+        <ShellContent
+            ContentTemplate="{DataTemplate views:ColaboradorListPage}"
+            Route="colaboradores" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Configurações" Route="configuracoes">
+        <ShellContent
+            ContentTemplate="{DataTemplate views:ConfigPage}"
+            Route="configuracoes" />
     </FlyoutItem>
 
 </Shell>

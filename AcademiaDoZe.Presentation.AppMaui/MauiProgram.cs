@@ -1,9 +1,9 @@
-﻿// Pedro Vinicius
-
-using AcademiaDoZe.Presentation.AppMaui.Configuration;
+﻿
 using AcademiaDoZe.Presentation.AppMaui.ViewModels;
 using AcademiaDoZe.Presentation.AppMaui.Views;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Hosting;
 
 namespace AcademiaDoZe.Presentation.AppMaui;
 
@@ -23,15 +23,18 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        ConfigurationHelper.ConfigureServices(builder.Services);
-
+        // Registrar ViewModels
         builder.Services.AddTransient<DashboardListViewModel>();
         builder.Services.AddTransient<LogradouroListViewModel>();
-        builder.Services.AddTransient<LogradouroViewModel>();
+        builder.Services.AddTransient<ColaboradorListViewModel>();
+        builder.Services.AddTransient<ColaboradorViewModel>();
 
+        // Registrar Views
         builder.Services.AddTransient<DashboardListPage>();
         builder.Services.AddTransient<LogradouroListPage>();
-        builder.Services.AddTransient<LogradouroPage>();
+        builder.Services.AddTransient<ColaboradorListPage>();
+        builder.Services.AddTransient<ColaboradorPage>();
+        builder.Services.AddTransient<ConfigPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

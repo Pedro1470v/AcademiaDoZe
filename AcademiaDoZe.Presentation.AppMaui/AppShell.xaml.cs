@@ -1,5 +1,4 @@
-﻿// Pedro Vinicius
-
+﻿
 using AcademiaDoZe.Presentation.AppMaui.Views;
 
 namespace AcademiaDoZe.Presentation.AppMaui;
@@ -11,7 +10,7 @@ public partial class AppShell : Shell
         InitializeComponent();
 
         Routing.RegisterRoute(
-            "logradouro",
-            typeof(LogradouroPage));
+            "colaborador",
+            typeof(ColaboradorPage));
     }
 }

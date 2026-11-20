@@ -5,203 +5,190 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Dashboard"
-    BackgroundColor="#1E1E1E">
+    BackgroundColor="{AppThemeBinding Light=#F4F4F4, Dark=#1E1E1E}">
 
     <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
 
-        <VerticalStackLayout
-            Padding="12"
-            Spacing="18">
-
-            <!-- LOGO -->
-            <Image
-                Source="academiadoze.jpg"
-                HeightRequest="150"
-                Aspect="AspectFit"
-                HorizontalOptions="Center" />
-
-            <!-- TÍTULO -->
+            <!-- Cabeçalho -->
             <VerticalStackLayout
-                Spacing="4"
-                HorizontalOptions="Center">
+                HorizontalOptions="Center"
+                Spacing="10">
+
+                <Image
+                    Source="academiadoze.jpg"
+                    HeightRequest="150"
+                    WidthRequest="190"
+                    Aspect="AspectFit" />
 
                 <Label
                     Text="Academia do Zé"
-                    FontSize="28"
-                    TextColor="White"
-                    HorizontalTextAlignment="Center" />
+                    FontSize="32"
+                    HorizontalTextAlignment="Center"
+                    TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
 
                 <Label
                     Text="Sistema de Gerenciamento"
-                    FontSize="20"
-                    TextColor="#DDDDDD"
-                    HorizontalTextAlignment="Center" />
+                    FontSize="22"
+                    HorizontalTextAlignment="Center"
+                    TextColor="{AppThemeBinding Light=#555555, Dark=#D9D9D9}" />
 
             </VerticalStackLayout>
 
-            <!-- CARTÕES -->
+            <!-- Cards do Dashboard -->
             <Grid
-                RowDefinitions="Auto,Auto"
                 ColumnDefinitions="*,*"
-                RowSpacing="18"
-                ColumnSpacing="28"
-                Margin="0,5,0,0">
+                RowDefinitions="Auto,Auto"
+                ColumnSpacing="20"
+                RowSpacing="20">
 
-                <!-- LOGRADOUROS -->
+                <!-- Logradouros -->
                 <Border
                     Grid.Row="0"
                     Grid.Column="0"
-                    HeightRequest="100"
-                    Padding="10"
-                    BackgroundColor="#1E1E1E"
-                    Stroke="#333333"
-                    StrokeThickness="1"
-                    StrokeShape="RoundRectangle 12">
-
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer
-                            Command="{Binding NavigateToLogradourosCommand}" />
-                    </Border.GestureRecognizers>
+                    Stroke="{AppThemeBinding Light=#DDDDDD, Dark=#333333}"
+                    StrokeThickness="1.5"
+                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="15">
 
                     <VerticalStackLayout
-                        Spacing="3"
                         HorizontalOptions="Center"
-                        VerticalOptions="Center">
+                        VerticalOptions="Center"
+                        Spacing="8">
+
+                        <Image
+                            Source="{AppThemeBinding Light=logradouros.png, Dark=logradouros_branco.png}"
+                            WidthRequest="48"
+                            HeightRequest="48"
+                            Aspect="AspectFit" />
 
                         <Label
                             Text="{Binding TotalLogradouros}"
-                            FontSize="28"
-                            TextColor="White"
+                            FontSize="34"
                             HorizontalTextAlignment="Center"
-                            HorizontalOptions="Center" />
+                            TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
 
                         <Label
                             Text="Logradouros"
-                            FontSize="14"
-                            TextColor="White"
+                            FontSize="16"
                             HorizontalTextAlignment="Center"
-                            HorizontalOptions="Center" />
+                            TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
 
                     </VerticalStackLayout>
-
                 </Border>
 
-                <!-- ALUNOS -->
+                <!-- Alunos -->
                 <Border
                     Grid.Row="0"
                     Grid.Column="1"
-                    HeightRequest="100"
-                    Padding="10"
-                    BackgroundColor="#1E1E1E"
-                    Stroke="#333333"
-                    StrokeThickness="1"
-                    StrokeShape="RoundRectangle 12">
+                    Stroke="{AppThemeBinding Light=#DDDDDD, Dark=#333333}"
+                    StrokeThickness="1.5"
+                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="15">
 
                     <VerticalStackLayout
-                        Spacing="3"
                         HorizontalOptions="Center"
-                        VerticalOptions="Center">
+                        VerticalOptions="Center"
+                        Spacing="8">
+
+                        <Image
+                            Source="{AppThemeBinding Light=alunos.png, Dark=alunos_branco.png}"
+                            WidthRequest="48"
+                            HeightRequest="48"
+                            Aspect="AspectFit" />
 
                         <Label
-                            Text="3"
-                            FontSize="28"
-                            TextColor="White"
+                            Text="283"
+                            FontSize="34"
                             HorizontalTextAlignment="Center"
-                            HorizontalOptions="Center" />
+                            TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
 
                         <Label
                             Text="Alunos"
-                            FontSize="14"
-                            TextColor="White"
+                            FontSize="16"
                             HorizontalTextAlignment="Center"
-                            HorizontalOptions="Center" />
+                            TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
 
                     </VerticalStackLayout>
-
                 </Border>
 
-                <!-- COLABORADORES -->
+                <!-- Colaboradores -->
                 <Border
                     Grid.Row="1"
                     Grid.Column="0"
-                    HeightRequest="100"
-                    Padding="10"
-                    BackgroundColor="#1E1E1E"
-                    Stroke="#333333"
-                    StrokeThickness="1"
-                    StrokeShape="RoundRectangle 12">
+                    Stroke="{AppThemeBinding Light=#DDDDDD, Dark=#333333}"
+                    StrokeThickness="1.5"
+                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="15">
 
                     <VerticalStackLayout
-                        Spacing="3"
                         HorizontalOptions="Center"
-                        VerticalOptions="Center">
+                        VerticalOptions="Center"
+                        Spacing="8">
+
+                        <Image
+                            Source="{AppThemeBinding Light=colaborador.png, Dark=colaborador_branco.png}"
+                            WidthRequest="48"
+                            HeightRequest="48"
+                            Aspect="AspectFit" />
 
                         <Label
-                            Text="2"
-                            FontSize="28"
-                            TextColor="White"
+                            Text="156"
+                            FontSize="34"
                             HorizontalTextAlignment="Center"
-                            HorizontalOptions="Center" />
+                            TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
 
                         <Label
                             Text="Colaboradores"
-                            FontSize="14"
-                            TextColor="White"
+                            FontSize="16"
                             HorizontalTextAlignment="Center"
-                            HorizontalOptions="Center" />
+                            TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
 
                     </VerticalStackLayout>
-
                 </Border>
 
-                <!-- MATRÍCULAS -->
+                <!-- Matrículas -->
                 <Border
                     Grid.Row="1"
                     Grid.Column="1"
-                    HeightRequest="100"
-                    Padding="10"
-                    BackgroundColor="#1E1E1E"
-                    Stroke="#333333"
-                    StrokeThickness="1"
-                    StrokeShape="RoundRectangle 12">
+                    Stroke="{AppThemeBinding Light=#DDDDDD, Dark=#333333}"
+                    StrokeThickness="1.5"
+                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#1E1E1E}"
+                    StrokeShape="RoundRectangle 16"
+                    Padding="15">
 
                     <VerticalStackLayout
-                        Spacing="3"
                         HorizontalOptions="Center"
-                        VerticalOptions="Center">
+                        VerticalOptions="Center"
+                        Spacing="8">
+
+                        <Image
+                            Source="{AppThemeBinding Light=matricula.png, Dark=matricula_branco.png}"
+                            WidthRequest="48"
+                            HeightRequest="48"
+                            Aspect="AspectFit" />
 
                         <Label
-                            Text="1"
-                            FontSize="28"
-                            TextColor="White"
+                            Text="93"
+                            FontSize="34"
                             HorizontalTextAlignment="Center"
-                            HorizontalOptions="Center" />
+                            TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
 
                         <Label
                             Text="Matrículas"
-                            FontSize="14"
-                            TextColor="White"
+                            FontSize="16"
                             HorizontalTextAlignment="Center"
-                            HorizontalOptions="Center" />
+                            TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}" />
 
                     </VerticalStackLayout>
-
                 </Border>
 
             </Grid>
 
-            <!-- CARREGAMENTO -->
-            <ActivityIndicator
-                IsVisible="{Binding IsBusy}"
-                IsRunning="{Binding IsBusy}"
-                Color="#A98BFF"
-                WidthRequest="35"
-                HeightRequest="35"
-                HorizontalOptions="Center"
-                Margin="0,5,0,10" />
-
         </VerticalStackLayout>
-
     </ScrollView>
 
 </ContentPage>

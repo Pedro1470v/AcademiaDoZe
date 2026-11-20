@@ -1,4 +1,5 @@
-﻿// Pedro Vinicius
+﻿
+// Pedro Vinicius
 
 namespace AcademiaDoZe.Application.DTOs;
 
@@ -17,4 +18,6 @@ public class LogradouroDto
     public string Cidade { get; set; } = string.Empty;
 
     public string Estado { get; set; } = string.Empty;
+
+    public string Pais { get; set; } = "Brasil";
 }

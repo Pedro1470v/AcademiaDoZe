@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.ConfigPage"
+    Title="Configurações">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <!-- Configuração do tema -->
+            <Border Padding="20">
+                <VerticalStackLayout Spacing="15">
+
+                    <Label
+                        Text="Tema do aplicativo"
+                        FontSize="20"
+                        FontAttributes="Bold" />
+
+                    <Picker
+                        x:Name="TemaPicker"
+                        Title="Selecione o tema">
+                        <Picker.Items>
+                            <x:String>Claro</x:String>
+                            <x:String>Escuro</x:String>
+                            <x:String>Sistema</x:String>
+                        </Picker.Items>
+                    </Picker>
+
+                    <Button
+                        Text="Salvar tema"
+                        Clicked="OnSalvarTemaClicked" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Configuração do SQLite -->
+            <Border Padding="20">
+                <VerticalStackLayout Spacing="15">
+
+                    <Label
+                        Text="Banco de dados SQLite"
+                        FontSize="20"
+                        FontAttributes="Bold" />
+
+                    <Label
+                        Text="Caminho do arquivo do banco (.db)" />
+
+                    <Entry
+                        x:Name="SqliteCaminhoEntry"
+                        Placeholder="Digite o caminho completo do arquivo .db"
+                        ClearButtonVisibility="WhileEditing" />
+
+                    <Button
+                        Text="Salvar caminho do banco"
+                        Clicked="OnSalvarBancoClicked" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <Button
+                Text="Voltar ao dashboard"
+                Clicked="OnCancelarClicked" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -1,20 +1,20 @@
-﻿// Pedro Vinicius
+﻿
+// Pedro Vinicius
+
+using AcademiaDoZe.Domain.Enums;
 
 namespace AcademiaDoZe.Application.DTOs;
 
-public class ColaboradorDto
+public class ColaboradorDto : PessoaDto
 {
-    public int Id { get; set; }
+    public DateOnly DataAdmissao { get; set; } =
+        DateOnly.FromDateTime(DateTime.Today);
 
-    public string Nome { get; set; } = string.Empty;
+    public EColaboradorTipo Tipo { get; set; } =
+        EColaboradorTipo.Atendente;
 
-    public string Cpf { get; set; } = string.Empty;
+    public EColaboradorVinculo Vinculo { get; set; } =
+        EColaboradorVinculo.CLT;
 
-    public string Email { get; set; } = string.Empty;
-
-    public string Telefone { get; set; } = string.Empty;
-
-    public string Tipo { get; set; } = string.Empty;
-
-    public bool Ativo { get; set; }
+    public bool Ativo { get; set; } = true;
 }
