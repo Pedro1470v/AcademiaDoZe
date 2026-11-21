@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+    xmlns:models="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Models"
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.MatriculaPage"
+    x:DataType="vm:MatriculaViewModel"
+    Title="{Binding Title}"
+    BackgroundColor="{AppThemeBinding Light=#F5F6FA, Dark=#181818}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="18">
+
+            <Label
+                Text="{Binding Title}"
+                FontSize="26"
+                FontAttributes="Bold"
+                TextColor="{AppThemeBinding Light=#222222, Dark=White}" />
+
+            <!-- CARD 1: DADOS DO ALUNO -->
+
+            <Border
+                Padding="18"
+                Stroke="#DDDDDD"
+                StrokeShape="RoundRectangle 12"
+                BackgroundColor="{AppThemeBinding Light=White, Dark=#252525}">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="1. Dados do Aluno"
+                        FontSize="19"
+                        FontAttributes="Bold" />
+
+                    <Label Text="CPF do aluno" />
+
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+
+                        <Entry
+                            Grid.Column="0"
+                            Placeholder="Digite o CPF"
+                            Keyboard="Numeric"
+                            MaxLength="14"
+                            Text="{Binding Matricula.AlunoMatricula.Cpf}" />
+
+                        <Button
+                            Grid.Column="1"
+                            Text="Buscar"
+                            Command="{Binding SearchByCpfCommand}"
+                            BackgroundColor="#512BD4"
+                            TextColor="White" />
+
+                    </Grid>
+
+                    <Label
+                        Text="{Binding Matricula.AlunoMatricula.Nome}"
+                        FontAttributes="Bold"
+                        FontSize="16" />
+
+                    <Label
+                        Text="Aluno encontrado"
+                        TextColor="Green"
+                        IsVisible="{Binding HasAlunoVinculado}" />
+
+                    <BoxView
+                        HeightRequest="1"
+                        BackgroundColor="#DDDDDD" />
+
+                    <Label
+                        Text="Foto do aluno"
+                        FontSize="16"
+                        FontAttributes="Bold" />
+
+                    <Border
+                        WidthRequest="150"
+                        HeightRequest="150"
+                        Stroke="#CCCCCC"
+                        StrokeShape="RoundRectangle 12"
+                        HorizontalOptions="Center"
+                        BackgroundColor="#EEEEEE">
+
+                        <Grid>
+
+                            <Image
+                                Source="{Binding FotoAlunoImageSource}"
+                                Aspect="AspectFill"
+                                IsVisible="{Binding HasFotoAluno}" />
+
+                            <Label
+                                Text="Sem foto"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                IsVisible="{Binding HasNoFotoAluno}"
+                                TextColor="#777777" />
+
+                        </Grid>
+                    </Border>
+
+                    <Button
+                        Text="Selecionar Foto do Aluno"
+                        Command="{Binding SelecionarFotoAlunoCommand}"
+                        BackgroundColor="#512BD4"
+                        TextColor="White" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- CARD 2: PLANO E VIGÊNCIA -->
+
+            <Border
+                Padding="18"
+                Stroke="#DDDDDD"
+                StrokeShape="RoundRectangle 12"
+                BackgroundColor="{AppThemeBinding Light=White, Dark=#252525}">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="2. Plano e Vigência"
+                        FontSize="19"
+                        FontAttributes="Bold" />
+
+                    <Label Text="Plano da matrícula" />
+
+                    <Picker
+                        x:Name="PlanoPicker"
+                        Title="Selecione o plano"
+                        ItemsSource="{Binding PlanoTipos}"
+                        SelectedItem="{Binding Matricula.Plano}"
+                        SelectedIndexChanged="PlanoPicker_SelectedIndexChanged" />
+
+                    <Label Text="Data de início" />
+
+                    <DatePicker
+                        x:Name="InicioDatePicker"
+                        Format="dd/MM/yyyy"
+                        DateSelected="InicioDatePicker_DateSelected" />
+
+                    <Label Text="Data final" />
+
+                    <DatePicker
+                        x:Name="FimDatePicker"
+                        Format="dd/MM/yyyy"
+                        IsEnabled="False" />
+
+                    <Label Text="Objetivo da matrícula" />
+
+                    <Editor
+                        Placeholder="Descreva o objetivo do aluno..."
+                        AutoSize="TextChanges"
+                        MinimumHeightRequest="90"
+                        Text="{Binding Matricula.Objetivo}" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- CARD 3: CONDIÇÕES DE SAÚDE -->
+
+            <Border
+                Padding="18"
+                Stroke="#DDDDDD"
+                StrokeShape="RoundRectangle 12"
+                BackgroundColor="{AppThemeBinding Light=White, Dark=#252525}">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="3. Condições de Saúde e Restrições"
+                        FontSize="19"
+                        FontAttributes="Bold" />
+
+                    <Label
+                        Text="Selecione as restrições de saúde do aluno:" />
+
+                    <CollectionView
+                        ItemsSource="{Binding RestricoesMulti}"
+                        SelectionMode="None">
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:RestricaoSelectable">
+
+                                <HorizontalStackLayout
+                                    Padding="4"
+                                    Spacing="10">
+
+                                    <CheckBox
+                                        IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+
+                                    <Label
+                                        Text="{Binding Value}"
+                                        VerticalOptions="Center" />
+
+                                </HorizontalStackLayout>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+
+                    </CollectionView>
+
+                    <Label Text="Observações sobre as restrições" />
+
+                    <Editor
+                        Placeholder="Informe detalhes importantes sobre a saúde do aluno..."
+                        AutoSize="TextChanges"
+                        MinimumHeightRequest="100"
+                        Text="{Binding Matricula.ObservacoesRestricoes}" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- CARD 4: LAUDO MÉDICO -->
+
+            <Border
+                Padding="18"
+                Stroke="#DDDDDD"
+                StrokeShape="RoundRectangle 12"
+                BackgroundColor="{AppThemeBinding Light=White, Dark=#252525}">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="4. Laudo Médico"
+                        FontSize="19"
+                        FontAttributes="Bold" />
+
+                    <Label
+                        Text="O laudo médico é obrigatório para alunos de 12 a 16 anos e alunos com restrições de saúde."
+                        FontSize="13" />
+
+                    <Label
+                        Text="Laudo médico anexado"
+                        TextColor="Green"
+                        IsVisible="{Binding HasLaudo}" />
+
+                    <Label
+                        Text="Laudo médico pendente"
+                        TextColor="Red"
+                        IsVisible="{Binding LaudoPendente}" />
+
+                    <Label
+                        Text="O laudo é opcional para este aluno."
+                        IsVisible="{Binding LaudoOpcional}" />
+
+                    <Button
+                        Text="Selecionar Laudo Médico"
+                        Command="{Binding SelecionarFotoCommand}"
+                        BackgroundColor="#512BD4"
+                        TextColor="White" />
+
+                    <Button
+                        Text="Remover Laudo"
+                        Command="{Binding RemoverLaudoCommand}"
+                        BackgroundColor="#B3261E"
+                        TextColor="White"
+                        IsVisible="{Binding HasLaudo}" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- BOTÕES DE AÇÃO -->
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+
+                <Button
+                    Grid.Column="0"
+                    Text="Cancelar"
+                    Command="{Binding CancelCommand}"
+                    BackgroundColor="#777777"
+                    TextColor="White" />
+
+                <Button
+                    Grid.Column="1"
+                    Text="Salvar Matrícula"
+                    Command="{Binding SaveMatriculaCommand}"
+                    BackgroundColor="#512BD4"
+                    TextColor="White" />
+
+            </Grid>
+
+            <ActivityIndicator
+                IsVisible="{Binding IsBusy}"
+                IsRunning="{Binding IsBusy}"
+                Color="#512BD4" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

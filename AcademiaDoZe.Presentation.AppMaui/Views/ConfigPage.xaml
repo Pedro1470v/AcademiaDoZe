@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.ConfigPage"
+    Title="Configurações">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="0,10,0,20">
+
+            <!-- Configurações do Tema -->
+            <Border
+                Style="{StaticResource CardBorder}"
+                Margin="15,0">
+
+                <VerticalStackLayout Spacing="15">
+
+                    <Label
+                        Text="Tema"
+                        Style="{StaticResource SubHeadline}" />
+
+                    <Label Text="Selecione o tema do aplicativo" />
+
+                    <Picker
+                        x:Name="TemaPicker"
+                        Title="Selecione o tema">
+
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Claro</x:String>
+                                <x:String>Escuro</x:String>
+                                <x:String>Sistema</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+
+                    </Picker>
+
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="10">
+
+                        <Button
+                            Grid.Column="0"
+                            Text="Cancelar"
+                            Clicked="OnCancelarClicked"
+                            Style="{StaticResource ButtonSecondary}"
+                            HeightRequest="45" />
+
+                        <Button
+                            Grid.Column="1"
+                            Text="Salvar Tema"
+                            Clicked="OnSalvarTemaClicked"
+                            Style="{StaticResource ButtonPrimary}"
+                            HeightRequest="45" />
+
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Configurações do Banco SQLite -->
+            <Border
+                Style="{StaticResource CardBorder}"
+                Margin="15,0">
+
+                <VerticalStackLayout Spacing="15">
+
+                    <Label
+                        Text="Banco de Dados"
+                        Style="{StaticResource SubHeadline}" />
+
+                    <Border
+                        BackgroundColor="{AppThemeBinding Light=#F0F7FF, Dark=#1A2633}"
+                        StrokeShape="RoundRectangle 8"
+                        Padding="12">
+
+                        <Label
+                            Text="O SQLite é um banco de dados local armazenado em arquivo. Não requer servidor de rede, usuário ou senha."
+                            FontSize="13"
+                            TextColor="{AppThemeBinding Light=#0056B3, Dark=#66B2FF}" />
+
+                    </Border>
+
+                    <Label Text="Caminho do arquivo do banco (.db)" />
+
+                    <Entry
+                        x:Name="SqliteCaminhoEntry"
+                        Placeholder="Caminho do arquivo .db" />
+
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="10">
+
+                        <Button
+                            Grid.Column="0"
+                            Text="Cancelar"
+                            Clicked="OnCancelarClicked"
+                            Style="{StaticResource ButtonSecondary}"
+                            HeightRequest="45" />
+
+                        <Button
+                            Grid.Column="1"
+                            Text="Salvar Banco"
+                            Clicked="OnSalvarBdClicked"
+                            Style="{StaticResource ButtonPrimary}"
+                            HeightRequest="45" />
+
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

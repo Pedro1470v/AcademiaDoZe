@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+    xmlns:dto="clr-namespace:AcademiaDoZe.Application.DTOs;assembly=AcademiaDoZe.Application"
+    xmlns:converters="clr-namespace:AcademiaDoZe.Presentation.AppMaui.Converters"
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.ColaboradorListPage"
+    x:DataType="vm:ColaboradorListViewModel"
+    Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:FotoToImageSourceConverter
+                x:Key="FotoToImageSourceConverter" />
+
+            <converters:EnumDisplayConverter
+                x:Key="EnumDisplay" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- FILTRO E PESQUISA -->
+        <Border
+            Grid.Row="0"
+            Style="{StaticResource CardBorder}"
+            Margin="15,10">
+
+            <Grid
+                ColumnDefinitions="Auto,10,*,10,Auto"
+                VerticalOptions="Center">
+
+                <Picker
+                    Grid.Column="0"
+                    Title="Filtro"
+                    ItemsSource="{Binding FilterTypes}"
+                    SelectedItem="{Binding SelectedFilterType}"
+                    WidthRequest="110"
+                    HeightRequest="40"
+                    VerticalOptions="Center" />
+
+                <Entry
+                    Grid.Column="2"
+                    Text="{Binding SearchText}"
+                    Placeholder="Digite o valor..."
+                    HeightRequest="40"
+                    VerticalOptions="Center"
+                    ClearButtonVisibility="WhileEditing"
+                    ReturnCommand="{Binding SearchColaboradoresCommand}" />
+
+                <Button
+                    Grid.Column="4"
+                    Style="{StaticResource ButtonPrimary}"
+                    WidthRequest="60"
+                    HeightRequest="40"
+                    Command="{Binding SearchColaboradoresCommand}">
+
+                    <Button.ImageSource>
+                        <FontImageSource
+                            FontFamily="MaterialIcons"
+                            Glyph="&#xe8b6;" />
+                    </Button.ImageSource>
+                </Button>
+
+            </Grid>
+        </Border>
+
+        <!-- LISTA DE COLABORADORES -->
+        <Grid Grid.Row="1">
+
+            <RefreshView
+                IsRefreshing="{Binding IsRefreshing}"
+                Command="{Binding RefreshCommand}">
+
+                <CollectionView
+                    ItemsSource="{Binding Colaboradores}"
+                    SelectionMode="None"
+                    Margin="10">
+
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout
+                            Orientation="Vertical"
+                            Span="1" />
+                    </CollectionView.ItemsLayout>
+
+                    <!-- ESTADO VAZIO -->
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout
+                            VerticalOptions="Center"
+                            Spacing="15"
+                            Padding="20">
+
+                            <Label
+                                Text="Nenhum colaborador encontrado"
+                                HorizontalOptions="Center"
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource SubHeadline}" />
+
+                            <Button
+                                Text="Adicionar Primeiro Colaborador"
+                                Command="{Binding AddColaboradorCommand}"
+                                Style="{StaticResource ButtonPrimary}"
+                                HeightRequest="50" />
+
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <!-- CARTÃO DO COLABORADOR -->
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="dto:ColaboradorDto">
+
+                            <Border
+                                Style="{StaticResource CardBorder}"
+                                Margin="5"
+                                Padding="10">
+
+                                <Grid
+                                    ColumnDefinitions="*,Auto,Auto"
+                                    ColumnSpacing="10"
+                                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Text="{Binding Nome}"
+                                        FontAttributes="Bold"
+                                        FontSize="16" />
+
+                                    <!-- FOTO -->
+                                    <Image
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Grid.RowSpan="8"
+                                        Source="{Binding Foto, Converter={StaticResource FotoToImageSourceConverter}}"
+                                        Aspect="AspectFill"
+                                        HeightRequest="110"
+                                        WidthRequest="110" />
+
+                                    <!-- BOTÃO EDITAR -->
+                                    <Button
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Text="Editar"
+                                        TextColor="White"
+                                        BackgroundColor="#512BD4"
+                                        FontAttributes="Bold"
+                                        FontSize="12"
+                                        WidthRequest="85"
+                                        HeightRequest="40"
+                                        CornerRadius="8"
+                                        Padding="5"
+                                        Clicked="OnEditButtonClicked" />
+
+                                    <!-- BOTÃO EXCLUIR -->
+                                    <Button
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Text="Excluir"
+                                        TextColor="White"
+                                        BackgroundColor="#D32F2F"
+                                        FontAttributes="Bold"
+                                        FontSize="12"
+                                        WidthRequest="85"
+                                        HeightRequest="40"
+                                        CornerRadius="8"
+                                        Padding="5"
+                                        Clicked="OnDeleteButtonClicked" />
+
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Text="{Binding Cpf, StringFormat='CPF: {0}'}" />
+
+                                    <Label
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Text="{Binding Telefone, StringFormat='Telefone: {0}'}" />
+
+                                    <Label
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        Text="{Binding Email, StringFormat='E-mail: {0}'}" />
+
+                                    <Label
+                                        Grid.Row="4"
+                                        Grid.Column="0"
+                                        Text="{Binding DataNascimento, StringFormat='Nascimento: {0:dd/MM/yyyy}'}" />
+
+                                    <Label
+                                        Grid.Row="5"
+                                        Grid.Column="0"
+                                        Text="{Binding DataAdmissao, StringFormat='Admissão: {0:dd/MM/yyyy}'}" />
+
+                                    <Label
+                                        Grid.Row="6"
+                                        Grid.Column="0"
+                                        Text="{Binding Tipo, Converter={StaticResource EnumDisplay}, StringFormat='Cargo: {0}'}" />
+
+                                    <Label
+                                        Grid.Row="7"
+                                        Grid.Column="0"
+                                        Text="{Binding Vinculo, Converter={StaticResource EnumDisplay}, StringFormat='Vínculo: {0}'}" />
+
+                                    <Label
+                                        Grid.Row="8"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3">
+
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Endereco.Nome}" />
+                                                <Span Text=", " />
+                                                <Span Text="{Binding Numero}" />
+                                                <Span Text=" - " />
+                                                <Span Text="{Binding Endereco.Bairro}" />
+                                                <Span Text=", " />
+                                                <Span Text="{Binding Endereco.Cidade}" />
+                                                <Span Text=" - " />
+                                                <Span Text="{Binding Endereco.Estado}" />
+                                                <Span Text=" (CEP: " />
+                                                <Span Text="{Binding Endereco.Cep}" />
+                                                <Span Text=")" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <Label
+                                        Grid.Row="9"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="3"
+                                        Text="{Binding Complemento, StringFormat='Complemento: {0}'}" />
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+            </RefreshView>
+
+            <!-- BOTÃO FLUTUANTE DE CADASTRO -->
+            <Button
+                Grid.Row="0"
+                Text="+"
+                FontSize="34"
+                FontAttributes="Bold"
+                TextColor="White"
+                BackgroundColor="#9575CD"
+                Command="{Binding AddColaboradorCommand}"
+                WidthRequest="60"
+                HeightRequest="60"
+                CornerRadius="30"
+                Padding="0"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="20"
+                ZIndex="10">
+
+                <Button.Shadow>
+                    <Shadow
+                        Brush="Black"
+                        Offset="0,4"
+                        Radius="8"
+                        Opacity="0.3" />
+                </Button.Shadow>
+            </Button>
+
+        </Grid>
+
+        <!-- INDICADOR DE CARREGAMENTO -->
+        <ActivityIndicator
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            IsVisible="{Binding IsBusy}"
+            IsRunning="{Binding IsBusy}"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            InputTransparent="True" />
+
+    </Grid>
+</ContentPage>

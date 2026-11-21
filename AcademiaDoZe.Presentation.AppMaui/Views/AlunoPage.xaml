@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:AcademiaDoZe.Presentation.AppMaui.ViewModels"
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.AlunoPage"
+    x:DataType="vm:AlunoViewModel"
+    Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="15" Spacing="15">
+
+            <!-- Dados do aluno -->
+            <Border
+                Style="{StaticResource CardBorder}"
+                Padding="15">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="Dados do Aluno"
+                        Style="{StaticResource SubHeadline}" />
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Nome completo" />
+                        <Entry
+                            Text="{Binding Aluno.Nome}"
+                            Placeholder="Digite o nome completo..." />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="CPF" />
+                        <Entry
+                            Text="{Binding Aluno.Cpf}"
+                            Placeholder="000.000.000-00"
+                            Keyboard="Numeric" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Data de nascimento" />
+                        <DatePicker
+                            Date="{Binding DataNascimentoSelecionada}"
+                            Format="dd/MM/yyyy" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Telefone" />
+                        <Entry
+                            Text="{Binding Aluno.Telefone}"
+                            Placeholder="Digite o telefone..."
+                            Keyboard="Telephone" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="E-mail" />
+                        <Entry
+                            Text="{Binding Aluno.Email}"
+                            Placeholder="Digite o e-mail..."
+                            Keyboard="Email" />
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Foto do aluno -->
+            <Border
+                Style="{StaticResource CardBorder}"
+                Padding="15">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="Foto do Aluno"
+                        Style="{StaticResource SubHeadline}" />
+
+                    <Border
+                        WidthRequest="160"
+                        HeightRequest="160"
+                        Stroke="#CCCCCC"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 10"
+                        HorizontalOptions="Center">
+
+                        <Image
+                            Source="{Binding FotoSource}"
+                            Aspect="AspectFill"
+                            WidthRequest="160"
+                            HeightRequest="160" />
+                    </Border>
+
+                    <Label
+                        Text="Selecione uma foto pela câmera ou galeria."
+                        HorizontalTextAlignment="Center"
+                        FontSize="12"
+                        TextColor="Gray" />
+
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="10">
+
+                        <Button
+                            Grid.Column="0"
+                            Text="Galeria"
+                            Command="{Binding SelecionarFotoCommand}"
+                            BackgroundColor="#512BD4"
+                            TextColor="White"
+                            HeightRequest="45" />
+
+                        <Button
+                            Grid.Column="1"
+                            Text="Câmera"
+                            Command="{Binding TirarFotoCommand}"
+                            BackgroundColor="#512BD4"
+                            TextColor="White"
+                            HeightRequest="45" />
+
+                    </Grid>
+
+                    <Button
+                        Text="Remover foto"
+                        Command="{Binding RemoverFotoCommand}"
+                        BackgroundColor="#808080"
+                        TextColor="White"
+                        HeightRequest="40" />
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Endereço -->
+            <Border
+                Style="{StaticResource CardBorder}"
+                Padding="15">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="Endereço"
+                        Style="{StaticResource SubHeadline}" />
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Logradouro" />
+                        <Picker
+                            Title="Selecione o logradouro"
+                            ItemsSource="{Binding Logradouros}"
+                            ItemDisplayBinding="{Binding Nome}"
+                            SelectedItem="{Binding LogradouroSelecionado}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="CEP" />
+                        <Entry
+                            Text="{Binding LogradouroSelecionado.Cep}"
+                            IsReadOnly="True"
+                            Placeholder="CEP" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Bairro" />
+                        <Entry
+                            Text="{Binding LogradouroSelecionado.Bairro}"
+                            IsReadOnly="True"
+                            Placeholder="Bairro" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Cidade" />
+                        <Entry
+                            Text="{Binding LogradouroSelecionado.Cidade}"
+                            IsReadOnly="True"
+                            Placeholder="Cidade" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Estado" />
+                        <Entry
+                            Text="{Binding LogradouroSelecionado.Estado}"
+                            IsReadOnly="True"
+                            Placeholder="Estado" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Número da residência" />
+                        <Entry
+                            Text="{Binding Numero}"
+                            Placeholder="Digite o número..."
+                            Keyboard="Numeric" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Complemento" />
+                        <Entry
+                            Text="{Binding Complemento}"
+                            Placeholder="Apartamento, bloco, referência..." />
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Senha -->
+            <Border
+                Style="{StaticResource CardBorder}"
+                Padding="15">
+
+                <VerticalStackLayout Spacing="12">
+
+                    <Label
+                        Text="Acesso do Aluno"
+                        Style="{StaticResource SubHeadline}" />
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Senha" />
+                        <Entry
+                            Text="{Binding Senha}"
+                            Placeholder="Digite a senha..."
+                            IsPassword="True" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Confirmar senha" />
+                        <Entry
+                            Text="{Binding ConfirmarSenha}"
+                            Placeholder="Confirmar senha"
+                            IsPassword="True" />
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Botões Cancelar e Salvar -->
+            <Grid
+                ColumnDefinitions="*,*"
+                ColumnSpacing="10"
+                Margin="0,5,0,10">
+
+                <Button
+                    Grid.Column="0"
+                    Text="Cancelar"
+                    Command="{Binding CancelCommand}"
+                    BackgroundColor="#808080"
+                    TextColor="White"
+                    HeightRequest="50"
+                    ImageSource="cancelar.png"
+                    ContentLayout="Left,10" />
+
+                <Button
+                    Grid.Column="1"
+                    Text="Salvar"
+                    Command="{Binding SaveAlunoCommand}"
+                    BackgroundColor="#512BD4"
+                    TextColor="White"
+                    HeightRequest="50"
+                    ImageSource="salvar.png"
+                    ContentLayout="Left,10" />
+
+            </Grid>
+
+            <!-- Indicador de carregamento -->
+            <ActivityIndicator
+                IsVisible="{Binding IsBusy}"
+                IsRunning="{Binding IsBusy}"
+                VerticalOptions="Center"
+                HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

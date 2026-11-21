@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="AcademiaDoZe.Presentation.AppMaui.Views.DashboardListPage"
+    Title="Dashboard"
+    BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#1E1E1E}">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="20">
+
+            <!-- LOGO DA ACADEMIA -->
+            <Image
+                Source="academiadoze.jpg"
+                HeightRequest="150"
+                Aspect="AspectFit"
+                HorizontalOptions="Center" />
+
+            <!-- TÍTULO -->
+            <Label
+                Text="Academia do Zé"
+                FontSize="28"
+                FontAttributes="Bold"
+                TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Bem-vindo ao sistema de gerenciamento"
+                FontSize="16"
+                TextColor="{AppThemeBinding Light=#555555, Dark=#DDDDDD}"
+                HorizontalOptions="Center"
+                HorizontalTextAlignment="Center" />
+
+            <!-- CARDS -->
+            <Grid
+                ColumnDefinitions="*,*"
+                RowDefinitions="Auto,Auto"
+                ColumnSpacing="15"
+                RowSpacing="15">
+
+                <!-- LOGRADOUROS -->
+                <Border
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Padding="15"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 15"
+                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#2D2D2D}">
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Tapped="OnLogradourosTapped" />
+                    </Border.GestureRecognizers>
+
+                    <VerticalStackLayout Spacing="10">
+
+                        <Image
+                            Source="{AppThemeBinding Light=logradouros.png, Dark=logradouros_branco.png}"
+                            HeightRequest="100"
+                            Aspect="AspectFit"
+                            HorizontalOptions="Center" />
+
+                        <Label
+                            Text="Logradouros"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}"
+                            HorizontalOptions="Center" />
+
+                        <Label
+                            Text="Gerenciar endereços"
+                            FontSize="12"
+                            TextColor="{AppThemeBinding Light=#555555, Dark=#DDDDDD}"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center" />
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- ALUNOS -->
+                <Border
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Padding="15"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 15"
+                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#2D2D2D}">
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Tapped="OnAlunosTapped" />
+                    </Border.GestureRecognizers>
+
+                    <VerticalStackLayout Spacing="10">
+
+                        <Image
+                            Source="{AppThemeBinding Light=alunos.png, Dark=alunos_branco.png}"
+                            HeightRequest="100"
+                            Aspect="AspectFit"
+                            HorizontalOptions="Center" />
+
+                        <Label
+                            Text="Alunos"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}"
+                            HorizontalOptions="Center" />
+
+                        <Label
+                            Text="Gerenciar alunos"
+                            FontSize="12"
+                            TextColor="{AppThemeBinding Light=#555555, Dark=#DDDDDD}"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center" />
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- MATRÍCULAS -->
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Padding="15"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 15"
+                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#2D2D2D}">
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Tapped="OnMatriculasTapped" />
+                    </Border.GestureRecognizers>
+
+                    <VerticalStackLayout Spacing="10">
+
+                        <Image
+                            Source="{AppThemeBinding Light=matricula.png, Dark=matricula_branco.png}"
+                            HeightRequest="100"
+                            Aspect="AspectFit"
+                            HorizontalOptions="Center" />
+
+                        <Label
+                            Text="Matrículas"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}"
+                            HorizontalOptions="Center" />
+
+                        <Label
+                            Text="Gerenciar matrículas"
+                            FontSize="12"
+                            TextColor="{AppThemeBinding Light=#555555, Dark=#DDDDDD}"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center" />
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- COLABORADORES -->
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Padding="15"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 15"
+                    BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#2D2D2D}">
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Tapped="OnColaboradoresTapped" />
+                    </Border.GestureRecognizers>
+
+                    <VerticalStackLayout Spacing="10">
+
+                        <Image
+                            Source="{AppThemeBinding Light=colaborador.png, Dark=colaborador.png}"
+                            HeightRequest="100"
+                            Aspect="AspectFit"
+                            HorizontalOptions="Center" />
+
+                        <Label
+                            Text="Colaboradores"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            TextColor="{AppThemeBinding Light=#222222, Dark=#FFFFFF}"
+                            HorizontalOptions="Center" />
+
+                        <Label
+                            Text="Gerenciar colaboradores"
+                            FontSize="12"
+                            TextColor="{AppThemeBinding Light=#555555, Dark=#DDDDDD}"
+                            HorizontalTextAlignment="Center"
+                            HorizontalOptions="Center" />
+
+                    </VerticalStackLayout>
+                </Border>
+
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

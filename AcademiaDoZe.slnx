@@ -1,0 +1,10 @@
+<Solution>
+  <Project Path="AcademiaDoZe.Application/AcademiaDoZe.Application.csproj" Id="d6fc8728-b1d4-4a55-abd6-d9e58457bc33" />
+  <Project Path="AcademiaDoZe.Domain.Testes/AcademiaDoZe.Domain.Testes.csproj" Id="1ee5bf7f-1faf-41d7-a53a-bc60ae57d97e" />
+  <Project Path="AcademiaDoZe.Domain/AcademiaDoZe.Domain.csproj" />
+  <Project Path="AcademiaDoZe.Estrutura/AcademiaDoZe.Infraestrutura.csproj" Id="93427294-6f89-4f1a-bbd5-b4cb09601346" />
+  <Project Path="AcademiaDoZe.Infrastructure.Testes/AcademiaDoZe.Infrastructure.Testes.csproj" Id="9941e467-4ef3-43d3-8c7a-b4911cd75091" />
+  <Project Path="AcademiaDoZe.Presentation.AppMaui/AcademiaDoZe.Presentation.AppMaui.csproj" Id="eb2eea03-0687-42a1-b478-412d617113f6">
+    <Deploy Solution="Debug|*" />
+  </Project>
+</Solution>
