@@ -25,7 +25,7 @@
 
                 <Button
                     Grid.Column="0"
-                    Text="🎓  Aluno"
+                    Text="🎓 Aluno"
                     BackgroundColor="{Binding CorBotaoAluno}"
                     TextColor="White"
                     CornerRadius="12"
@@ -34,7 +34,7 @@
 
                 <Button
                     Grid.Column="1"
-                    Text="💼  Colaborador"
+                    Text="💼 Colaborador"
                     BackgroundColor="{Binding CorBotaoColaborador}"
                     TextColor="White"
                     CornerRadius="12"
@@ -102,7 +102,6 @@
                         SelectedItem="{Binding PessoaSelecionada}" />
 
                 </VerticalStackLayout>
-
             </Border>
 
             <!-- IDENTIFICAÇÃO -->
@@ -139,9 +138,7 @@
                                 Source="{Binding FotoPessoa}"
                                 Aspect="AspectFill"
                                 HeightRequest="80"
-                                WidthRequest="80"
-                                HorizontalOptions="Fill"
-                                VerticalOptions="Fill" />
+                                WidthRequest="80" />
 
                         </Border>
 
@@ -170,10 +167,8 @@
                                 TextColor="{Binding CorStatus}" />
 
                         </VerticalStackLayout>
-
                     </Grid>
 
-                    <!-- BOTÃO DE ENTRADA OU SAÍDA -->
                     <Button
                         Text="{Binding TextoBotaoAcesso}"
                         BackgroundColor="#512BD4"
@@ -184,7 +179,6 @@
                         Command="{Binding RegistrarAcessoCommand}" />
 
                 </VerticalStackLayout>
-
             </Border>
 
             <!-- RESULTADO -->
@@ -206,7 +200,6 @@
                         FontSize="12" />
 
                 </VerticalStackLayout>
-
             </Border>
 
             <!-- HISTÓRICO -->
@@ -252,6 +245,7 @@
 
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
+
                                 <Grid
                                     ColumnDefinitions="*,Auto"
                                     Padding="5">
@@ -276,13 +270,13 @@
                                         VerticalOptions="Center" />
 
                                 </Grid>
+
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
 
                     </CollectionView>
 
                 </VerticalStackLayout>
-
             </Border>
 
             <!-- CARREGAMENTO -->
