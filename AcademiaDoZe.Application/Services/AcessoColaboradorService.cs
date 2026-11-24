@@ -1,4 +1,6 @@
 ﻿
+// Pedro Vinicius
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,10 +70,12 @@ public class AcessoColaboradorService
                 "O colaborador já possui uma entrada em aberto.");
         }
 
-        var tempoTotalDoDia = await _acessoRepoFactory()
+        var acessoRepository = _acessoRepoFactory();
+
+        var tempoTotalDoDia = await acessoRepository
             .ObterTempoTotalDoDia(
                 colaboradorId,
-                dataHoraEntrada.Date,
+                dataHoraEntrada,
                 cancellationToken);
 
         TimeSpan limiteDiario =
@@ -100,8 +104,9 @@ public class AcessoColaboradorService
                     resultado.Notifications.Select(x => x.Mensagem)));
         }
 
-        return await _acessoRepoFactory()
-            .Adicionar(resultado.Value!, cancellationToken);
+        return await acessoRepository.Adicionar(
+            resultado.Value!,
+            cancellationToken);
     }
 
     public async Task<AcessoColaborador> RegistrarSaidaAsync(
@@ -109,7 +114,9 @@ public class AcessoColaboradorService
         DateTime dataHoraSaida,
         CancellationToken cancellationToken = default)
     {
-        var acesso = await _acessoRepoFactory()
+        var acessoRepository = _acessoRepoFactory();
+
+        var acesso = await acessoRepository
             .ObterPorId(acessoId, cancellationToken);
 
         if (acesso == null)
@@ -124,27 +131,22 @@ public class AcessoColaboradorService
                 "Este acesso já possui uma saída registrada.");
         }
 
-        var tempoTotalDoDia = await _acessoRepoFactory()
-            .ObterTempoTotalDoDia(
-                acesso.Colaborador.ID,
-                acesso.DataHoraEntrada.Date,
-                cancellationToken);
-
-        TimeSpan permanenciaAtual =
-            dataHoraSaida - acesso.DataHoraEntrada;
-
-        var validacaoLimite = acesso.ValidarLimiteDiario(
-            tempoTotalDoDia + permanenciaAtual);
-
-        if (validacaoLimite.IsFailure)
+        if (dataHoraSaida < acesso.DataHoraEntrada)
         {
-            throw new InvalidOperationException(
-                string.Join(
-                    ", ",
-                    validacaoLimite.Notifications.Select(x => x.Mensagem)));
+            throw new ArgumentException(
+                "A data e hora da saída não podem ser anteriores à entrada.");
         }
 
-        var resultado = acesso.RegistrarSaida(dataHoraSaida);
+        var tempoTotalDoDia = await acessoRepository
+            .ObterTempoTotalDoDia(
+                acesso.Colaborador.ID,
+                acesso.DataHoraEntrada,
+                cancellationToken);
+
+        // Registra a saída mesmo quando o limite diário é ultrapassado.
+        var resultado = acesso.RegistrarSaida(
+            dataHoraSaida,
+            tempoTotalDoDia);
 
         if (resultado.IsFailure)
         {
@@ -154,8 +156,10 @@ public class AcessoColaboradorService
                     resultado.Notifications.Select(x => x.Mensagem)));
         }
 
-        return await _acessoRepoFactory()
-            .Atualizar(acesso, cancellationToken);
+        // Salva a saída no banco, sem bloquear por excesso de horas.
+        return await acessoRepository.Atualizar(
+            acesso,
+            cancellationToken);
     }
 
     public async Task<bool> RemoverAsync(
